@@ -2,18 +2,18 @@ export function buildServerResponse(res, statusCode, resourceName, missingParams
     res.writeHead(statusCode, {'Content-Type': 'application/json'})
 
     switch(statusCode){
-        case 200:
+        case '201':
             res.end(JSON.stringify({
                 message: 'The ' + resourceName + ' was created successfully.'
             }))
             break;
-        case 400:
+        case '400':
             res.end(JSON.stringify({
                 error: 'Bad Request',
                 message: 'The following parameters must be sent: ' + missingParams.join(", ")
             }))
             break;
-        case 404: 
+        case '404': 
             res.end(JSON.stringify({
                 error: 'Not found',
                 message: 'The ' + resourceName + ' with the following id ' + searchedId + ' was not found.'
