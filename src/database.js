@@ -20,15 +20,14 @@ export class Database{
 
     select(table, search){
         let data = this.#database[table] ?? [];
-
+        console.log(search);
         if(search){
             data = data.filter(row => {
                 return Object.entries(search).some(([key, value]) => {
-                    return row[key].toLowerCase().includes(value.toLowerCase());
+                    return row[key].toLowerCase().includes(value.toLowerCase().split('%20').join(' '));
                 })
             })
         }
-
         return data;
     }
 
