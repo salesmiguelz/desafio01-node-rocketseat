@@ -1,10 +1,16 @@
-export function buildServerResponse(res, statusCode, resourceName, missingParams, searchedId){
+export function buildServerResponse(res, statusCode, data,  missingParams){
     res.writeHead(statusCode, {'Content-Type': 'application/json'})
 
     switch(statusCode){
+        case '200':
+            res.end(JSON.stringify({
+                content: data
+            }))
+            break;
         case '201':
             res.end(JSON.stringify({
-                message: 'The ' + resourceName + ' was created successfully.'
+                message: 'The task was created successfully.',
+                content: data
             }))
             break;
         case '400':
@@ -16,7 +22,7 @@ export function buildServerResponse(res, statusCode, resourceName, missingParams
         case '404': 
             res.end(JSON.stringify({
                 error: 'Not found',
-                message: 'The ' + resourceName + ' with the following id ' + searchedId + ' was not found.'
+                message: 'No tasks were found.'
             }))
             break;
     }
