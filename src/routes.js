@@ -7,6 +7,22 @@ const database = new Database;
 
 export const routes = [
     {
+        method: 'GET',
+        path: buildRoutePath('/tasks'),
+        handler: (req, res) => {
+            const { search } = req.query;
+            const tasks = database.select('tasks', search ? {
+                title: search,
+                description: search
+            } : null);
+            if(tasks){
+                return buildServerResponse(res, '200', tasks, null);
+            } else{
+                return buildServerResponse(res, '404', tasks, null);
+            }
+        }
+    },
+    {
         method: 'POST',
         path: buildRoutePath('/tasks'),
         handler: (req, res) => {
@@ -28,11 +44,11 @@ export const routes = [
                     "updated_at": new Date()
                 }
 
-                database.insert('/tasks', task)
+                database.insert('tasks', task)
                 
-                return buildServerResponse(res, '201', 'task', null, null);
+                return buildServerResponse(res, '201', task, null);
             } else {    
-                return buildServerResponse(res, '400', 'task', missingParams, null);
+                return buildServerResponse(res, '400', missingParams);
             }
         }
     }
