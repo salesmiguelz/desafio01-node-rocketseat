@@ -58,20 +58,11 @@ export const routes = [
         handler: (req, res) => {
             const { id } = req.params;
             const { title, description } = req.body;
-            const missingParams = [];
 
-            if(!title){
-                missingParams.push('title');
+            if(!title && !description){
+                return buildServerResponse(res, '400', null, ['title', 'description']);
             }
-
-            if(!description){
-                missingParams.push('description');
-            }
-
-            if(missingParams.length){
-                return buildServerResponse(res, '400', null, missingParams);
-            }
-        
+            
             const task = database.select('tasks', null, id);
 
             if(task){

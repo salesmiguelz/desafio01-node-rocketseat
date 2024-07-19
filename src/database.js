@@ -54,8 +54,9 @@ export class Database{
             const resource = this.#database[table][rowIndex];
             const updatedResource = {
                 ...resource,
-                title: data.title, 
-                description: data.description, 
+                title: data.title ? data.title : resource.title, 
+                description: data.description ? data.description : resource.description,
+                updated_at: new Date()
             }
             this.#database[table][rowIndex] = updatedResource;
             this.#persist();
