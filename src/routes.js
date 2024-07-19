@@ -81,5 +81,20 @@ export const routes = [
                 return buildServerResponse(res, '404', null, null);
             }
         }
-    }
+    },
+    {
+        method: 'DELETE',
+        path: buildRoutePath('/tasks/:id'),
+        handler: (req, res) => {
+            const { id } = req.params;
+            const task = database.select('tasks', null, id);
+            if(task){
+                database.delete('tasks', id);
+                return buildServerResponse(res, '200', null, null);
+            } else {
+                return buildServerResponse(res, '404', null, null);
+            }
+        }
+    },
+
 ]
