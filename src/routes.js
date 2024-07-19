@@ -96,5 +96,19 @@ export const routes = [
             }
         }
     },
+    {
+        method: 'PATCH',
+        path: buildRoutePath('/tasks/:id/complete'),
+        handler: (req, res) => {
+            const { id } = req.params;
+            const task = database.select('tasks', null, id);
+            if(task){
+                const patchedTask = database.patch('tasks', id);
+                return buildServerResponse(res, '200', patchedTask, null);
+            } else {
+                return buildServerResponse(res, '404', null, null);
+            }
+        }
+    },
 
 ]

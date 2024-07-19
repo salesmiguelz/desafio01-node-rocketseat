@@ -71,4 +71,21 @@ export class Database{
         }
     }
 
+    patch(table, id){
+        const rowIndex = this.#database[table].findIndex(row => row.id === id);
+        if(rowIndex >= -1){
+            const resource = this.#database[table][rowIndex];
+            let updatedResource = null;
+            if(!resource.completed_at){
+                updatedResource = {...resource, completed_at: new Date()} 
+            } else {
+                updatedResource = {...resource, completed_at: null} 
+            }
+            this.#database[table][rowIndex] = updatedResource;
+            this.#persist();
+
+            return updatedResource;
+        }
+    }
+
 }
