@@ -48,7 +48,37 @@ export const routes = [
                 
                 return buildServerResponse(res, '201', task, null);
             } else {    
-                return buildServerResponse(res, '400', missingParams);
+                return buildServerResponse(res, '400', null, missingParams);
+            }
+        }
+    },
+    {
+        method: 'PUT',
+        path: buildRoutePath('/tasks/:id'),
+        handler: (req, res) => {
+            const { id } = req.params;
+            const { title, description } = req.body;
+            const missingParams = [];
+
+            if(!title){
+                missingParams.push('title');
+            }
+
+            if(!description){
+                missingParams.push('description');
+            }
+
+            if(missingParams.length){
+                return buildServerResponse(res, '400', null, missingParams);
+            }
+        
+            const task = database.select('tasks', null, id);
+
+            if(task){
+                const updatedTask = database.update('tasks', id, req.body);
+                return buildServerResponse(res, '200', updatedTask, null);
+            } else {
+                return buildServerResponse(res, '404', null, null);
             }
         }
     }

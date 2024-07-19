@@ -18,10 +18,16 @@ export class Database{
         fs.writeFile(databasePath, JSON.stringify(this.#database))
     }
 
-    select(table, search){
+    select(table, search, id){
         let data = this.#database[table] ?? [];
-        console.log(search);
-        if(search){
+        if(id){
+           const rowIndex = this.#database[table].findIndex(row => row.id === id);
+           if(rowIndex >= -1){
+                data = this.#database[table][rowIndex] 
+            } else {
+                data = [];
+            }
+        } else if(search){
             data = data.filter(row => {
                 return Object.entries(search).some(([key, value]) => {
                     return row[key].toLowerCase().includes(value.toLowerCase().split('%20').join(' '));
@@ -45,8 +51,15 @@ export class Database{
     update(table, id, data){
         const rowIndex = this.#database[table].findIndex(row => row.id === id);
         if(rowIndex >= -1){
-            this.#database[table][rowIndex] = {id,  ...data};
+            const resource = this.#database[table][rowIndex];
+            const updatedResource = {
+                ...resource,
+                title: data.title, 
+                description: data.description, 
+            }
+            this.#database[table][rowIndex] = updatedResource;
             this.#persist();
+            return updatedResource;
         }
     }
 
