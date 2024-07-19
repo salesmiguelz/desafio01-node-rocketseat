@@ -4,7 +4,7 @@ export function buildServerResponse(res, statusCode, data,  missingParams){
     switch(statusCode){
         case '200':
             res.end(JSON.stringify({
-                content: data
+                content: data ?? 'The task was deleted successfully.'
             }))
             break;
         case '201':
