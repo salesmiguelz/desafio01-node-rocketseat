@@ -6,7 +6,7 @@ export async function readCSVFile(req, res){
     const csvStream = fs.createReadStream(csvPath);
 
     const csvParsed = parse({
-        delimiter: ',',
+        delimiter: ';',
         skipEmptyLines: true,
         fromLine: 2 
     });
