@@ -2,6 +2,7 @@ import { Database } from './database.js';
 import { buildRoutePath } from './utils/build-route-path.js';
 import { randomUUID } from 'node:crypto';
 import { buildServerResponse } from './utils/build-server-response.js';
+import { readCSVFile } from './utils/read-csv-file.js';
 
 const database = new Database;
 
@@ -101,5 +102,12 @@ export const routes = [
             }
         }
     },
+    {
+        method: 'GET',
+        path: buildRoutePath('/tasks/read-csv'),
+        handler: (req, res) => {
+           readCSVFile(req, res);
+        }
+    }
 
 ]
